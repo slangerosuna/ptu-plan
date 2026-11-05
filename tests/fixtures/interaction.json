@@ -1,0 +1,60 @@
+{
+  "domain": {
+    "name": "interactions",
+    "requirements": ["Hierarchy", "NegativePreconditions"],
+    "predicates": [
+      {"name": "p", "variables": []},
+      {"name": "q", "variables": []},
+      {"name": "ready", "variables": []}
+    ],
+    "compound_tasks": [{"name": "job", "parameters": []}],
+    "methods": [{
+      "name": {"name": "m-job"},
+      "task": {"name": "job"},
+      "task_terms": [],
+      "params": [],
+      "precondition": {"Atom": {"name": "ready", "variables": []}},
+      "tn": {
+        "subtasks": [
+          {"id": {"name": "a"}, "task": {"name": "make"}, "terms": []},
+          {"id": {"name": "b"}, "task": {"name": "use"}, "terms": []},
+          {"id": {"name": "c"}, "task": {"name": "erase"}, "terms": []}
+        ],
+        "orderings": {"Partial": [["a", "b"]]},
+        "constraints": [{"Equal": ["anchor", "anchor"]}]
+      }
+    }],
+    "actions": [
+      {"name": "make", "parameters": [], "effects": {"Atom": {"name": "p", "variables": []}}},
+      {
+        "name": "use", "parameters": [],
+        "preconditions": {"And": [
+          {"Atom": {"name": "p", "variables": []}},
+          {"Not": {"Atom": {"name": "q", "variables": []}}}
+        ]},
+        "effects": {"And": [
+          {"Not": {"Atom": {"name": "p", "variables": []}}},
+          {"Atom": {"name": "q", "variables": []}}
+        ]}
+      },
+      {"name": "erase", "parameters": [], "effects": {"Not": {"Atom": {"name": "p", "variables": []}}}}
+    ],
+    "functions": []
+  },
+  "problem": {
+    "name": "two-roots",
+    "domain_name": "interactions",
+    "requirements": ["Hierarchy"],
+    "init_tn": {
+      "tn": {
+        "subtasks": [
+          {"id": {"name": "root-job"}, "task": {"name": "job"}, "terms": []},
+          {"id": {"name": "root-use"}, "task": {"name": "use"}, "terms": []}
+        ],
+        "orderings": {"Partial": []}
+      }
+    },
+    "init_state": [{"name": "ready", "variables": []}],
+    "objects": []
+  }
+}

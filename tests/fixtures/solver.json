@@ -1,0 +1,59 @@
+{
+  "domain": {
+    "name": "finish-items",
+    "types": [{"name": "item"}, {"name": "special", "symbol_type": "item"}, {"name": "empty"}],
+    "requirements": ["Hierarchy", "TypedObjects", "NegativePreconditions", "UniversalPreconditions"],
+    "predicates": [
+      {"name": "ready", "variables": [{"name": "?x", "symbol_type": "item"}]},
+      {"name": "done", "variables": [{"name": "?x", "symbol_type": "item"}]},
+      {"name": "locked", "variables": [{"name": "?x", "symbol_type": "item"}]}
+    ],
+    "compound_tasks": [{"name": "finish", "parameters": [{"name": "?x", "symbol_type": "item"}]}],
+    "methods": [
+      {
+        "name": {"name": "blocked"}, "task": {"name": "finish"},
+        "task_terms": [{"name": "?x"}], "params": [{"name": "?x", "symbol_type": "item"}],
+        "precondition": {"Atom": {"name": "locked", "variables": [{"name": "?x"}]}},
+        "tn": {"subtasks": [], "orderings": "Total"}
+      },
+      {
+        "name": {"name": "finish-one"}, "task": {"name": "finish"},
+        "task_terms": [{"name": "?x"}], "params": [{"name": "?x", "symbol_type": "item"}],
+        "precondition": {"Atom": {"name": "ready", "variables": [{"name": "?x"}]}},
+        "tn": {
+          "subtasks": [{"task": {"name": "consume"}, "terms": [{"name": "?x"}]}],
+          "orderings": "Total"
+        }
+      }
+    ],
+    "actions": [{
+      "name": "consume", "parameters": [{"name": "?x", "symbol_type": "item"}],
+      "preconditions": {"And": [
+        {"Atom": {"name": "ready", "variables": [{"name": "?x"}]}},
+        {"Not": {"Atom": {"name": "locked", "variables": [{"name": "?x"}]}}}
+      ]},
+      "effects": {"And": [
+        {"Not": {"Atom": {"name": "ready", "variables": [{"name": "?x"}]}}},
+        {"Atom": {"name": "done", "variables": [{"name": "?x"}]}}
+      ]}
+    }],
+    "functions": []
+  },
+  "problem": {
+    "name": "finish-both", "domain_name": "finish-items", "requirements": ["Hierarchy"],
+    "objects": [{"name": "a", "symbol_type": "special"}, {"name": "b", "symbol_type": "item"}],
+    "init_state": [
+      {"name": "ready", "variables": [{"name": "a"}]},
+      {"name": "ready", "variables": [{"name": "b"}]}
+    ],
+    "init_tn": {"tn": {
+      "subtasks": [
+        {"id": {"name": "first"}, "task": {"name": "finish"}, "terms": [{"name": "a"}]},
+        {"id": {"name": "second"}, "task": {"name": "finish"}, "terms": [{"name": "b"}]}
+      ],
+      "orderings": {"Partial": []},
+      "constraints": [{"NotEqual": ["a", "b"]}]
+    }},
+    "goal": {"ForAll": [[{"name": "?x", "symbol_type": "item"}], {"Atom": {"name": "done", "variables": [{"name": "?x"}]}}]}
+  }
+}

@@ -1,0 +1,4 @@
+/target
+/runs
+/.venv-training
+__pycache__/

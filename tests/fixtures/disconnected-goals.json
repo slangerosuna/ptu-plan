@@ -1,0 +1,17 @@
+{
+  "domain": {
+    "name":"independent-goals", "requirements":["Hierarchy"],
+    "predicates":[{"name":"p","variables":[]},{"name":"q","variables":[]}],
+    "compound_tasks":[], "methods":[], "functions":[],
+    "actions":[
+      {"name":"make-p","parameters":[],"effects":{"Atom":{"name":"p","variables":[]}}},
+      {"name":"make-q","parameters":[],"effects":{"Atom":{"name":"q","variables":[]}}}
+    ]
+  },
+  "problem": {
+    "name":"independent", "domain_name":"independent-goals", "requirements":["Hierarchy"],
+    "objects":[], "init_state":[],
+    "init_tn":{"tn":{"subtasks":[{"task":{"name":"make-p"},"terms":[]},{"task":{"name":"make-q"},"terms":[]}],"orderings":{"Partial":[]}}},
+    "goal":{"And":[{"Atom":{"name":"p","variables":[]}},{"Atom":{"name":"q","variables":[]}}]}
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "domain": {
+    "name": "interleaving-signals",
+    "requirements": ["Hierarchy"],
+    "predicates": [{"name":"p","variables":[]},{"name":"q","variables":[]}],
+    "compound_tasks": [{"name":"left","parameters":[]},{"name":"right","parameters":[]}],
+    "methods": [
+      {"name":{"name":"left-body"},"task":{"name":"left"},"task_terms":[],"params":[],
+       "tn":{"subtasks":[{"task":{"name":"make-p"},"terms":[]},{"task":{"name":"need-q"},"terms":[]}],"orderings":"Total"}},
+      {"name":{"name":"right-body"},"task":{"name":"right"},"task_terms":[],"params":[],
+       "tn":{"subtasks":[{"task":{"name":"make-q"},"terms":[]},{"task":{"name":"need-p"},"terms":[]}],"orderings":"Total"}}
+    ],
+    "actions": [
+      {"name":"make-p","parameters":[],"effects":{"Atom":{"name":"p","variables":[]}}},
+      {"name":"need-q","parameters":[],"preconditions":{"Atom":{"name":"q","variables":[]}}},
+      {"name":"make-q","parameters":[],"effects":{"Atom":{"name":"q","variables":[]}}},
+      {"name":"need-p","parameters":[],"preconditions":{"Atom":{"name":"p","variables":[]}}}
+    ],
+    "functions": []
+  },
+  "problem": {
+    "name":"exchange-signals","domain_name":"interleaving-signals","requirements":[],"objects":[],"init_state":[],
+    "init_tn":{"tn":{"subtasks":[{"task":{"name":"left"},"terms":[]},{"task":{"name":"right"},"terms":[]}],"orderings":{"Partial":[]}}},
+    "goal":{"And":[{"Atom":{"name":"p","variables":[]}},{"Atom":{"name":"q","variables":[]}}]}
+  }
+}
